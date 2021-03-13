@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="ru">
+<nav id="w0" class="navbar-inverse navbar-fixed-top navbar">
+    <div class="container">
+        <div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w0-collapse"><span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button><a class="navbar-brand" href="/">Закрыть панель</a>
+        </div>
+        <div id="w0-collapse" class="collapse navbar-collapse">
+            <ul id="w1" class="navbar-nav navbar-right nav">
+                <li><a href="/admin/users">Пользователи</a></li>
+                <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Таблицы </a>
+                    <ul id="w2" class="dropdown-menu">
+                        <li><a href="/admin/feedback"tabindex="-1">Отзывы</a></li>
+                        <li><a href="/admin/objects"tabindex="-1">Объекты</a></li>
+                        <li><a href="/admin/roles"tabindex="-1">Роли</a></li>
+                        <li><a href="/admin/agents"tabindex="-1">Агенты</a></li>
+                        <li><a href="/manage/requestList"tabindex="-1">Заявки</a></li>
+                    </ul>
+                </li>
+                <li th:if="${#authentication.name} == anonymousUser"><a href="/login">Вход|Регистрация</a></li>
+                <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown" th:if="${#authentication.name} != anonymousUser" th:utext="${#authentication.name}"></a>
+                    <ul id="userDrop" class="dropdown-menu">
+                        <li><a th:href="@{/logout}" class="alert-warning" tabindex="-1">Выход</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+</html>

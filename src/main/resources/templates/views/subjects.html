@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="ru"
+>
+<head>
+    <title>Предметы</title>
+</head>
+<body>
+<div th:replace="~{includes/links.html :: div}"></div>
+<div class="navbar">
+    <nav th:replace="~{includes/navbar.html :: nav}"></nav>
+</div>
+<div class="container-fluid well text-center">
+    <div class="panel-body">
+        <h1>Таблица "Предметы"</h1>
+    </div>
+</div>
+
+<div class="container-fluid text-center">
+    <form th:action="${'/addSubject'}" th:method="post">
+        <input class="btn btn-outline-primary" role="button" type="submit" th:value="${'Добавить предмет'}"/>
+    </form>
+    <br>
+    <table class="table table-hover table-bordered" >
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Название </th>
+            <th scope="col">Количество часов</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr scope="row" th:each="tempObj : ${subjects}">
+            <th class="align-middle" th:text="${tempObj.id}"></th>
+            <th class="align-middle" th:text="${tempObj.subjectName}"></th>
+            <th class="align-middle" th:text="${tempObj.countOfHours}"></th>
+            <th style="width:250px">
+                <div class="row justify-content-around">
+                    <div class="col">
+                        <form th:object="${subject}" th:method="post" th:action="${'/editSubject'}">
+                            <input th:text="${subject.setId(tempObj.id)}" th:hidden="true" th:field="*{id}"/>
+                            <input class="btn btn-outline-info" role="button" type="submit" th:value="${'Редактировать'}"/>
+                        </form>
+                    </div>
+                    <div class="col">
+                        <form th:object="${subject}" th:method="post" th:action="${'/deleteSubject'}">
+                            <input th:text="${subject.setId(tempObj.id)}" th:hidden="true" th:field="*{id}"/>
+                            <input th:onclick = "if ((confirm('Удалить предмет: '+/*[[${tempObj.subjectName}]]*/+'?'))) return true; return false;" class="btn btn-outline-danger" role="button" type="submit" th:value="${'Удалить'}"/>
+                        </form>
+                    </div>
+                </div>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

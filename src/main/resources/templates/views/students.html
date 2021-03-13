@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="ru"
+>
+<head>
+    <title>Студенты</title>
+</head>
+<body>
+<div th:replace="~{includes/links.html :: div}"></div>
+<div class="navbar">
+    <nav th:replace="~{includes/navbar.html :: nav}"></nav>
+</div>
+<div class="container-fluid well text-center">
+    <div class="panel-body">
+        <h1>Таблица "Студенты"</h1>
+    </div>
+</div>
+
+<div class="container-fluid text-center">
+    <form th:action="${'/addStudent'}" th:method="post">
+        <input class="btn btn-outline-primary" role="button" type="submit" th:value="${'Добавить нового студента'}"/>
+    </form>
+    <br>
+    <table class="table table-hover table-bordered" >
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Фамилия </th>
+            <th scope="col">Имя</th>
+            <th scope="col">Зачетная книжка</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr scope="row" th:each="tempStudent : ${students}">
+            <th class="align-middle" th:text="${tempStudent.id}"></th>
+            <th class="align-middle" th:text="${tempStudent.studentSurname}"></th>
+            <th class="align-middle" th:text="${tempStudent.studentName}"></th>
+            <th class="align-middle" th:text="${tempStudent.numberOfRecordBook}"></th>
+            <th style="width:250px">
+                <div class="row justify-content-around">
+                    <div class="col">
+                        <form th:object="${student}" th:method="post" th:action="${'/editStudent'}">
+                            <input th:text="${student.setId(tempStudent.id)}" th:hidden="true" th:field="*{id}"/>
+                            <input class="btn btn-outline-info" role="button" type="submit" th:value="${'Редактировать'}"/>
+                        </form>
+                    </div>
+                    <div class="col">
+                        <form th:object="${student}" th:method="post" th:action="${'/deleteStudent'}">
+                            <input th:text="${student.setId(tempStudent.id)}" th:hidden="true" th:field="*{id}"/>
+                            <input th:onclick = "if ((confirm('Удалить студента с именем: '+/*[[${tempStudent.studentName}]]*/+'?'))) return true; return false;" class="btn btn-outline-danger" role="button" type="submit" th:value="${'Удалить'}"/>
+                        </form>
+                    </div>
+                </div>
+
+            </th>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

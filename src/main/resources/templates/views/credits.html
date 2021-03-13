@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="ru"
+>
+<head>
+    <title th:text="${title}"></title>
+</head>
+<body>
+<div th:replace="~{includes/links.html :: div}"></div>
+<div class="navbar">
+    <nav th:replace="~{includes/navbar.html :: nav}"></nav>
+</div>
+<div class="container-fluid well text-center">
+    <div class="panel-body">
+        <h1 th:text="'Таблица \''+ ${title}+'\''"></h1>
+    </div>
+</div>
+<div class="container-fluid text-center">
+    <form th:action="${'/addCredit'}" th:method="post" th:if="${title} == 'Зачеты'">
+        <input class="btn btn-outline-primary" role="button" type="submit" th:value="${'Добавить зачет'}"/>
+    </form>
+    <form th:action="${'/addExam'}" th:method="post" th:if="${title} == 'Экзамены'">
+        <input class="btn btn-outline-primary" role="button" type="submit" th:value="${'Добавить экзамен'}"/>
+    </form>
+    <br>
+    <table class="table table-hover table-bordered" >
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Предмет</th>
+            <th scope="col">Студент</th>
+            <th scope="col">Оценка</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr scope="row" th:each="tempCredit : ${credits}">
+            <th class="align-middle" th:text="${tempCredit.id}"></th>
+            <th class="align-middle" th:text="${tempCredit.subject.toView()}"></th>
+            <th class="align-middle" th:text="${tempCredit.student.toView()}"></th>
+            <th class="align-middle" th:text="${tempCredit.mark}"></th>
+            <th style="width:250px">
+                <div class="row justify-content-around" th:if="${title} == 'Зачеты'">
+                    <div class="col">
+                        <form th:object="${credit}" th:method="post" th:action="${'/editCredit'}">
+                            <input th:text="${credit.setId(tempCredit.id)}" th:hidden="true" th:field="*{id}"/>
+                            <input class="btn btn-outline-info" role="button" type="submit" th:value="${'Редактировать'}"/>
+                        </form>
+                    </div>
+                    <div class="col">
+                        <form th:object="${credit}" th:method="post" th:action="${'/deleteCredit'}">
+                            <input th:text="${credit.setId(tempCredit.id)}" th:hidden="true" th:field="*{id}"/>
+                            <input th:onclick = "if ((confirm('Удалить запись с id: '+/*[[${tempCredit.id}]]*/+'?'))) return true; return false;" class="btn btn-outline-danger" role="button" type="submit" th:value="${'Удалить'}"/>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row justify-content-around" th:if="${title} == 'Экзамены'">
+                    <div class="col">
+                        <form th:object="${credit}" th:method="post" th:action="${'/editExam'}">
+                            <input th:text="${credit.setId(tempCredit.id)}" th:hidden="true" th:field="*{id}"/>
+                            <input class="btn btn-outline-info" role="button" type="submit" th:value="${'Редактировать'}"/>
+                        </form>
+                    </div>
+                    <div class="col">
+                        <form th:object="${credit}" th:method="post" th:action="${'/deleteExam'}">
+                            <input th:text="${credit.setId(tempCredit.id)}" th:hidden="true" th:field="*{id}"/>
+                            <input th:onclick = "if ((confirm('Удалить запись с id: '+/*[[${tempCredit.id}]]*/+'?'))) return true; return false;" class="btn btn-outline-danger" role="button" type="submit" th:value="${'Удалить'}"/>
+                        </form>
+                    </div>
+                </div>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
